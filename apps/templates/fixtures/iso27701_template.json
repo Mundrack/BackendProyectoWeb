@@ -1,0 +1,105 @@
+{
+  "name": "ISO 27701 - Gestión de Privacidad (Simplificada)",
+  "iso_standard": "27701",
+  "description": "Plantilla simplificada para auditorías de gestión de privacidad y protección de datos personales basada en ISO 27701",
+  "is_active": true,
+  "version": 1,
+  "questions": [
+    {
+      "category": "Política y Organización",
+      "question_text": "¿Existe una política de privacidad documentada y aprobada por la dirección?",
+      "order_num": 1,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Verificar que exista un documento formal de política de privacidad aprobado por la alta dirección y que esté actualizado."
+    },
+    {
+      "category": "Política y Organización",
+      "question_text": "¿Se ha designado un responsable de protección de datos (DPO o equivalente)?",
+      "order_num": 2,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Confirmar que existe una persona designada formalmente como responsable de la protección de datos personales."
+    },
+    {
+      "category": "Política y Organización",
+      "question_text": "¿Se comunica la política de privacidad a todos los empleados y se brinda capacitación regular?",
+      "order_num": 3,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Revisar evidencia de comunicación y programas de capacitación sobre privacidad para el personal."
+    },
+    {
+      "category": "Gestión de Datos Personales",
+      "question_text": "¿Se mantiene un registro actualizado de actividades de tratamiento de datos personales?",
+      "order_num": 4,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Verificar la existencia y actualización del registro de tratamientos según normativa aplicable."
+    },
+    {
+      "category": "Gestión de Datos Personales",
+      "question_text": "¿Se implementan medidas técnicas y organizativas adecuadas para proteger los datos personales?",
+      "order_num": 5,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Evaluar controles de seguridad: cifrado, control de acceso, respaldos, etc."
+    },
+    {
+      "category": "Gestión de Datos Personales",
+      "question_text": "¿Se realiza clasificación de datos según su nivel de sensibilidad y se aplican controles diferenciados?",
+      "order_num": 6,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Revisar esquema de clasificación de datos y controles aplicados según categoría."
+    },
+    {
+      "category": "Derechos de los Titulares",
+      "question_text": "¿Existe un proceso documentado para atender solicitudes de derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)?",
+      "order_num": 7,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Verificar procedimientos para gestionar solicitudes de los titulares de datos."
+    },
+    {
+      "category": "Derechos de los Titulares",
+      "question_text": "¿Se respetan los plazos legales establecidos para responder a las solicitudes de los titulares?",
+      "order_num": 8,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Revisar tiempos de respuesta históricos y compararlos con requisitos normativos."
+    },
+    {
+      "category": "Derechos de los Titulares",
+      "question_text": "¿Se mantiene un registro detallado de todas las solicitudes de derechos recibidas y su estado de atención?",
+      "order_num": 9,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Verificar sistema de registro y seguimiento de solicitudes de titulares."
+    },
+    {
+      "category": "Cumplimiento y Mejora Continua",
+      "question_text": "¿Se realizan auditorías internas de cumplimiento de privacidad de forma periódica?",
+      "order_num": 10,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Revisar plan de auditorías internas y últimos informes de auditoría."
+    },
+    {
+      "category": "Cumplimiento y Mejora Continua",
+      "question_text": "¿Se documentan y corrigen de manera oportuna las no conformidades y brechas de seguridad identificadas?",
+      "order_num": 11,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Evaluar proceso de gestión de no conformidades y planes de acción correctiva."
+    },
+    {
+      "category": "Cumplimiento y Mejora Continua",
+      "question_text": "¿Se mantiene evidencia actualizada del cumplimiento con las normativas de protección de datos aplicables?",
+      "order_num": 12,
+      "max_score": 5,
+      "is_required": true,
+      "help_text": "Verificar repositorio de evidencias de cumplimiento normativo y su actualización."
+    }
+  ]
+}
