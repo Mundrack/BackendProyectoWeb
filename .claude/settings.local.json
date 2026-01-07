@@ -9,7 +9,10 @@
       "Bash(pip install:*)",
       "Bash(python manage.py migrate:*)",
       "Bash(python manage.py runserver:*)",
-      "Bash(python manage.py:*)"
+      "Bash(python manage.py:*)",
+      "Bash(python generate_fase6_postman.py:*)",
+      "Bash(python:*)",
+      "Bash(ls:*)"
     ]
   }
 }
