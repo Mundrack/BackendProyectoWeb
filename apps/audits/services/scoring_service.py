@@ -77,3 +77,26 @@ class ScoringService:
             'started_at': audit.started_at,
             'completed_at': audit.completed_at,
         }
+
+    @staticmethod
+    def get_response_summary(audit):
+        """
+        Cuenta los tipos de respuestas (yes, no, partial, na)
+        """
+        summary = {
+            'total_questions': audit.template.questions.count(),
+            'answered': 0,
+            'yes': 0,
+            'no': 0,
+            'partial': 0,
+            'na': 0
+        }
+        
+        responses = audit.responses.all()
+        summary['answered'] = responses.count()
+        
+        for response in responses:
+            if response.response_type in summary:
+                summary[response.response_type] += 1
+                
+        return summary

@@ -68,11 +68,6 @@ class Team(models.Model):
         return f"{self.department.branch.name} - {self.name} ({self.get_team_type_display()})"
 
     @property
-    def member_count(self):
-        """Cantidad de miembros en el equipo"""
-        return self.members.count()
-
-    @property
     def company(self):
         """Empresa a la que pertenece el equipo"""
         return self.department.branch.company

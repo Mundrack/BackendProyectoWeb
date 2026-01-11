@@ -198,6 +198,13 @@ class AuditResponse(models.Model):
     Incluye score, notas y evidencias.
     """
 
+    RESPONSE_TYPE_CHOICES = [
+        ('yes', 'Sí'),
+        ('no', 'No'),
+        ('partial', 'Parcial'),
+        ('na', 'No Aplica'),
+    ]
+
     audit = models.ForeignKey(
         Audit,
         on_delete=models.CASCADE,
@@ -210,6 +217,16 @@ class AuditResponse(models.Model):
         related_name='responses',
         verbose_name='Pregunta'
     )
+    
+    # Tipo de respuesta (yes/no/partial/na)
+    response_type = models.CharField(
+        max_length=10,
+        choices=RESPONSE_TYPE_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name='Tipo de Respuesta'
+    )
+    
     score = models.IntegerField(
         null=True,
         blank=True,

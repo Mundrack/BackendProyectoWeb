@@ -44,7 +44,7 @@ class AuditService:
 
     @staticmethod
     @transaction.atomic
-    def save_response(audit_id, question_id, score, notes, evidence_file, user):
+    def save_response(audit_id, question_id, score, notes, evidence_file, user, response_type=None):
         """
         Guarda o actualiza una respuesta a una pregunta de auditoría.
         Recalcula el score automáticamente.
@@ -83,6 +83,7 @@ class AuditService:
                 audit=audit,
                 question=question,
                 defaults={
+                    'response_type': response_type,
                     'score': score,
                     'notes': notes,
                     'evidence_file': evidence_file or ''
@@ -120,13 +121,14 @@ class AuditService:
                 )
 
             # Validar que todas las preguntas obligatorias estén respondidas
+            # Una pregunta está respondida si existe un registro de respuesta,
+            # independientemente de si tiene score o no (puede ser 'na')
             required_questions = audit.template.questions.filter(
                 is_required=True
             ).count()
 
             answered_required = audit.responses.filter(
-                question__is_required=True,
-                score__isnull=False
+                question__is_required=True
             ).count()
 
             if answered_required < required_questions:

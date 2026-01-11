@@ -61,6 +61,13 @@ class AuditResponseCreateSerializer(serializers.Serializer):
     """Serializer simplificado para crear/actualizar respuestas"""
 
     question_id = serializers.IntegerField()
+    
+    # Aceptar tanto 'response' (tipo) como 'score' (número)
+    response = serializers.ChoiceField(
+        choices=['yes', 'no', 'partial', 'na'],
+        required=False,
+        allow_null=True
+    )
     score = serializers.IntegerField(
         required=False,
         allow_null=True,
@@ -75,6 +82,37 @@ class AuditResponseCreateSerializer(serializers.Serializer):
         required=False,
         allow_blank=True
     )
+
+    def validate(self, attrs):
+        """Validar que se proporcione response o score"""
+        response = attrs.get('response')
+        score = attrs.get('score')
+        
+        # Si no se proporciona ni response ni score, es válido (permite guardar solo notas)
+        # Si se proporciona response, convertirlo a score
+        if response is not None:
+            # Obtener la pregunta para conocer el max_score
+            question_id = attrs.get('question_id')
+            if question_id:
+                from apps.templates.models import TemplateQuestion
+                try:
+                    question = TemplateQuestion.objects.get(id=question_id)
+                    max_score = question.max_score
+                    
+                    # Convertir response a score
+                    response_to_score = {
+                        'yes': max_score,           # 100% del puntaje
+                        'partial': max_score * 0.5, # 50% del puntaje
+                        'no': 0,                    # 0% del puntaje
+                        'na': None,                 # No aplica = sin puntaje
+                    }
+                    
+                    attrs['score'] = response_to_score.get(response)
+                except TemplateQuestion.DoesNotExist:
+                    pass
+        
+        return attrs
+
 
 
 class AuditListSerializer(serializers.ModelSerializer):

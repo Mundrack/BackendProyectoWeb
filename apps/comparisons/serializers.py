@@ -84,7 +84,8 @@ class ComparisonCreateSerializer(serializers.Serializer):
     audit_ids = serializers.ListField(
         child=serializers.IntegerField(),
         min_length=2,
-        max_length=5
+        max_length=5,
+        write_only=True
     )
 
     def validate_audit_ids(self, value):

@@ -126,6 +126,7 @@ class AuditViewSet(viewsets.ModelViewSet):
                 'is_required': question.is_required,
                 'help_text': question.help_text,
                 'response': {
+                    'response_type': response.response_type if response else None,
                     'score': response.score if response else None,
                     'notes': response.notes if response else '',
                     'evidence_file': response.evidence_file if response else '',
@@ -151,7 +152,8 @@ class AuditViewSet(viewsets.ModelViewSet):
 
         Body: {
             "question_id": 1,
-            "score": 4,
+            "response": "yes",  # o "no", "partial", "na"
+            "score": 4,  # opcional, se calcula automáticamente desde response
             "notes": "Cumple parcialmente",
             "evidence_file": "https://..."
         }
@@ -167,7 +169,8 @@ class AuditViewSet(viewsets.ModelViewSet):
                 score=serializer.validated_data.get('score'),
                 notes=serializer.validated_data.get('notes', ''),
                 evidence_file=serializer.validated_data.get('evidence_file', ''),
-                user=request.user
+                user=request.user,
+                response_type=serializer.validated_data.get('response')
             )
 
             # Refrescar audit para obtener scores actualizados
@@ -247,24 +250,53 @@ class AuditViewSet(viewsets.ModelViewSet):
         """
         audit = self.get_object()
 
-        # Generar resumen completo
+        # Generar resúmenes
+        response_summary = ScoringService.get_response_summary(audit)
+        score_by_category = ScoringService.get_score_by_category(audit)
+
+        # Obtener respuestas detalladas
+        responses = audit.responses.select_related('question').all()
+        responses_data = []
+        for r in responses:
+            responses_data.append({
+                'question_text': r.question.question_text,
+                'category': r.question.category,
+                'response': r.response_type,
+                'comments': r.notes,
+                'score': r.score,
+                'max_score': r.question.max_score
+            })
+
+        # Construir reporte completo
+        report_data = {
+            'audit': {
+                'id': audit.id,
+                'title': audit.title,
+                'company_name': audit.company.name,
+                'template_name': audit.template.name,
+                'created_at': audit.created_at,
+                'completed_at': audit.completed_at
+            },
+            'summary': response_summary,
+            'responses': responses_data,
+            'score_by_category': score_by_category
+        }
+
+        return Response(report_data)
+
+    @action(detail=True, methods=['get'], url_path='score-breakdown')
+    def score_breakdown(self, request, pk=None):
+        """
+        GET /api/audits/{id}/score-breakdown/
+        Obtiene el desglose de puntuación
+        """
+        audit = self.get_object()
         summary = ScoringService.get_audit_summary(audit)
-
-        # Agregar información adicional
-        summary['company'] = {
-            'name': audit.company.name,
-            'address': audit.company.address
-        }
-
-        if audit.branch:
-            summary['branch'] = {
-                'name': audit.branch.name,
-                'address': audit.branch.address
-            }
-
-        summary['auditor'] = {
-            'name': audit.assigned_to.get_full_name(),
-            'email': audit.assigned_to.email
-        }
-
-        return Response(summary)
+        
+        # Mapear al formato ScoreBreakdown esperado por el frontend
+        return Response({
+            'total_score': summary['total_score'],
+            'max_score': summary['max_possible_score'],
+            'percentage': summary['score_percentage'],
+            'categories': summary['categories']
+        })

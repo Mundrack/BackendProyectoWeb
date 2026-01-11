@@ -13,7 +13,7 @@ class TeamMemberInline(admin.TabularInline):
 class TeamAdmin(admin.ModelAdmin):
     list_display = [
         'name', 'department', 'team_type', 'leader',
-        'member_count', 'is_active', 'created_at'
+        'get_member_count', 'is_active', 'created_at'
     ]
     list_filter = ['team_type', 'is_active', 'created_at', 'department__branch__company']
     search_fields = ['name', 'description', 'leader__email']
@@ -33,6 +33,10 @@ class TeamAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+    def get_member_count(self, obj):
+        return obj.members.count()
+    get_member_count.short_description = 'Miembros'
 
 
 @admin.register(TeamMember)

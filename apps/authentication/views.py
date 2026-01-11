@@ -121,3 +121,27 @@ class ChangePasswordView(APIView):
         return Response({
             'message': 'Contraseña actualizada exitosamente'
         }, status=status.HTTP_200_OK)
+
+
+class EmployeeListView(APIView):
+    """Lista de empleados filtrada por compañía"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        company_id = request.query_params.get('company')
+
+        # Filtrar empleados tipo 'employee'
+        employees = User.objects.filter(user_type='employee', is_active=True)
+
+        # Si el usuario es owner, filtrar por sus compañías
+        if user.user_type == 'owner':
+            from apps.companies.models import Company
+            companies = Company.objects.filter(owner=user)
+            if company_id:
+                companies = companies.filter(id=company_id)
+            # No aplicamos filtro de compañía aquí, devolvemos todos los employees
+            # El owner puede asignar cualquier employee a sus equipos
+
+        serializer = UserSerializer(employees, many=True)
+        return Response(serializer.data)
