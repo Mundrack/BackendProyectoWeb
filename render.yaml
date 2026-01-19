@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: backendproyectoweb
+    env: python
+    runtime: python-3.11.9
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input
+    startCommand: gunicorn audit_system.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: audit_system.settings.production
+      - key: PYTHON_VERSION
+        value: 3.11.9
