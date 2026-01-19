@@ -7,20 +7,16 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 # Database - Supabase PostgreSQL (Direct Connection)
+import dj_database_url
+
+# Database - Supabase PostgreSQL
+# Parse DATABASE_URL from environment, fall back to individual vars if needed
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('NAME', default='postgres'),
-        'USER': config('USER', default='postgres'),
-        'PASSWORD': config('PASSWORD', default=''),
-        'HOST': config('HOST', default=''),
-        'PORT': config('PORT', default='5432'),
-        'OPTIONS': {
-            'sslmode': 'require',
-            'connect_timeout': 10,
-        },
-        'CONN_MAX_AGE': 0,
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # Security Settings
