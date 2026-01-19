@@ -55,8 +55,17 @@ MIDDLEWARE = [
 ]
 
 # CORS Settings (ajusta según tus necesidades)
+# CORS Settings
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='').split(',')
-if not CORS_ALLOWED_ORIGINS or CORS_ALLOWED_ORIGINS == ['']:
+# Clean empty strings from split
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS if origin.strip()]
+
+# Add Vercel frontend domain
+CORS_ALLOWED_ORIGINS.extend([
+    "https://frontendproyectoweb.vercel.app",
+])
+
+if not CORS_ALLOWED_ORIGINS:
     CORS_ALLOW_ALL_ORIGINS = True
 
 # Logging para producción
