@@ -143,7 +143,7 @@ class AuditListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Audit
         fields = [
-            'id', 'title', 'company_name', 'branch_name',
+            'id', 'title', 'template', 'company_name', 'branch_name',
             'template_name', 'assigned_to_name', 'status',
             'scheduled_date', 'score_percentage', 'progress',
             'created_at', 'completed_at'
