@@ -111,6 +111,14 @@ backend/
 
 ---
 
+## Documentación Técnica Completa
+
+Para una visión detallada de la arquitectura, modelo de datos y flujos del sistema, consulta el archivo maestro de documentación en la raíz del proyecto:
+
+📄 **[DOCUMENTACION_TECNICA.md](../DOCUMENTACION_TECNICA.md)**
+
+---
+
 ## Comandos Útiles
 
 ```bash
